@@ -35,8 +35,13 @@ workon nutriai-env
 ### 5. Install Dependencies
 
 ```bash
-# Upgrade pip
-pip install --upgrade pip
+# Fix pip if there's an error (common on PythonAnywhere)
+python -m pip install --upgrade pip
+
+# If above fails, reinstall pip
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
+rm get-pip.py
 
 # Install requirements
 pip install -r requirements.txt
@@ -150,6 +155,18 @@ python populate_foods.py
 Then reload your web app from the Web tab.
 
 ## Troubleshooting
+
+### Error: "ModuleNotFoundError: No module named '_posixsubprocess'"
+This is a pip corruption issue on PythonAnywhere. Fix it:
+```bash
+# Reinstall pip in the virtual environment
+python -m pip install --force-reinstall pip
+
+# Or use curl method
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
+rm get-pip.py
+```
 
 ### Error: "No module named 'flask'"
 - Make sure virtual environment is activated
