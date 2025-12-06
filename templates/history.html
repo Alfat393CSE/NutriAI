@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - NutriAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="app-body">
+    {% include 'includes/sidebar.html' %}
+    
+    <main class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1><i class="fas fa-history"></i> Activity History</h1>
+                <p>Track your nutrition journey and see your progress</p>
+            </div>
+            <div class="top-bar-right">
+                <button class="export-btn" onclick="exportHistory()" title="Export history data">
+                    <i class="fas fa-download"></i>
+                    Export CSV
+                </button>
+                <select id="timePeriod" class="form-control" onchange="loadHistory()" aria-label="Select time period">\n                    <option value="7">Last 7 Days</option>
+                    <option value="7">Last 7 Days</option>
+                    <option value="30" selected>Last 30 Days</option>
+                    <option value="90">Last 3 Months</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Activities</div>
+                    <div class="stat-value" id="totalActivities">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Unique Foods</div>
+                    <div class="stat-value" id="uniqueFoods">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Calories</div>
+                    <div class="stat-value" id="totalCalories">0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Protein</div>
+                    <div class="stat-value" id="totalProtein">0g</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Report Section -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-chart-bar"></i> Weekly Report</h3>
+                <button class="btn-secondary btn-sm" onclick="loadWeeklyReport()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="weeklyChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-list"></i> Recent Activity</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterHistory('all')">All</button>
+                    <button class="filter-btn" onclick="filterHistory('search')">Searches</button>
+                    <button class="filter-btn" onclick="filterHistory('view')">Views</button>
+                    <button class="filter-btn" onclick="filterHistory('log')">Logged</button>
+                    <button class="filter-btn" onclick="filterHistory('recommend')">Recommendations</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="historyFeed" class="history-feed">
+                    <div class="loading">Loading history...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Foods Section -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-star"></i> Most Viewed Foods</h3>
+            </div>
+            <div class="card-body">
+                <div id="topFoodsList" class="top-foods-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Theme Toggle Button -->
+    <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered nutrition and diet management platform with personalized meal planning">
+    <meta name="theme-color" content="#6366f1">
+    <title>NutriAI - Your AI-Powered Nutrition Assistant</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    
+    <!-- iOS Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="NutriAI">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-leaf"></i>
+                <span>NutriAI</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="{{ url_for('login') }}" class="btn-secondary">Login</a>
+                <a href="{{ url_for('register') }}" class="btn-primary">Get Started Free</a>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-sparkles"></i>
+                    <span>AI-Powered Nutrition Platform</span>
+                </div>
+                <h1 class="hero-title">
+                    Transform Your Health with
+                    <span class="gradient-text">Intelligent Nutrition</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Get personalized meal plans, track your nutrition, and achieve your health goals 
+                    with our advanced AI-powered platform. Join thousands already transforming their lives.
+                </p>
+                <div class="hero-cta">
+                    <a href="{{ url_for('register') }}" class="btn-large btn-primary">
+                        Start Your Journey Free
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#features" class="btn-large btn-outline">
+                        <i class="fas fa-play-circle"></i>
+                        Watch Demo
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">1M+</span>
+                        <span class="stat-label">Meals Planned</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Success Rate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image-container">
+                    <div class="floating-card card-1">
+                        <i class="fas fa-utensils"></i>
+                        <div>
+                            <div class="card-title">Smart Meal Plans</div>
+                            <div class="card-subtitle">AI-Generated Weekly</div>
+                        </div>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <div class="card-title">Track Progress</div>
+                            <div class="card-subtitle">Real-time Analytics</div>
+                        </div>
+                    </div>
+                    <div class="floating-card card-3">
+                        <i class="fas fa-robot"></i>
+                        <div>
+                            <div class="card-title">AI Assistant</div>
+                            <div class="card-subtitle">24/7 Nutrition Help</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Powerful Features for Your Success</h2>
+                <p class="section-subtitle">Everything you need to achieve your nutrition goals in one place</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon purple">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI Meal Planning</h3>
+                    <p>Get personalized 7-day meal plans generated by advanced AI based on your goals, preferences, and dietary restrictions.</p>
+                    <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon blue">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <h3>Smart Food Swap</h3>
+                    <p>Find healthier alternatives to your favorite foods instantly. Our AI suggests perfect substitutes based on nutrition and taste.</p>
+                    <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon green">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Macro Tracking</h3>
+                    <p>Track calories, protein, carbs, and fats with precision. Beautiful visualizations help you stay on target every day.</p>
+                    <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon orange">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>AI Chatbot</h3>
+                    <p>24/7 nutrition assistant powered by AI. Get instant answers about foods, recipes, and dietary advice anytime.</p>
+                    <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon pink">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <h3>Mood-Based Foods</h3>
+                    <p>Get food recommendations based on your current mood. Stressed? Tired? We suggest foods to help you feel better.</p>
+                    <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon red">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Allergy Alerts</h3>
+                    <p>Automatic allergen detection keeps you safe. Get instant warnings when a food contains ingredients you're allergic to.</p>
+                    <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon teal">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3>Budget Planner</h3>
+                    <p>Plan nutritious meals within your budget. Our AI optimizes meal plans to be both healthy and affordable.</p>
+                    <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon indigo">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Health Score</h3>
+                    <p>Every food gets a health rating from Excellent to Unhealthy. Make informed choices with our comprehensive scoring system.</p>
+                    <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon yellow">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3>Food Comparison</h3>
+                    <p>Compare foods side-by-side to make better choices. See nutritional differences at a glance with beautiful charts.</p>
+                    <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">Start your journey to better health in three simple steps</p>
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Create Your Profile</h3>
+                        <p>Tell us about your health goals, dietary preferences, allergies, and lifestyle. Our AI learns what works best for you.</p>
+                    </div>
+                    <div class="step-visual">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Get Your Meal Plan</h3>
+                        <p>Receive a personalized 7-day meal plan with perfectly balanced nutrition, generated by our advanced AI algorithms.</p>
+                    </div>
+                    <div class="step-visual">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Track & Achieve</h3>
+                        <p>Log your meals, track your progress, and watch as you reach your health goals. Our AI adapts to your journey.</p>
+                    </div>
+                    <div class="step-visual">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What Our Users Say</h2>
+                <p class="section-subtitle">Join thousands of satisfied users transforming their health</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"NutriAI completely changed how I approach nutrition. Lost 25 lbs in 3 months and feel amazing! The AI meal plans are incredibly personalized."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SK</div>
+                        <div>
+                            <div class="author-name">Sarah Johnson</div>
+                            <div class="author-role">Weight Loss Success</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"As a busy professional, meal planning was always a struggle. NutriAI makes it effortless. The budget planner is a game-changer!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MC</div>
+                        <div>
+                            <div class="author-name">Michael Chen</div>
+                            <div class="author-role">Software Engineer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Managing diabetes has never been easier. The AI understands my restrictions and creates delicious, safe meal plans. Truly life-changing!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">RP</div>
+                        <div>
+                            <div class="author-name">Robert Patterson</div>
+                            <div class="author-role">Diabetic Management</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Health?</h2>
+                <p>Join 50,000+ users already achieving their nutrition goals with NutriAI</p>
+                <a href="{{ url_for('register') }}" class="btn-large btn-primary">
+                    Start Free Today
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <p class="cta-note">No credit card required • Free forever plan available</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="nav-brand">
+                        <i class="fas fa-leaf"></i>
+                        <span>NutriAI</span>
+                    </div>
+                    <p>AI-powered nutrition guidance for a healthier lifestyle. Get personalized meal recommendations and track your nutritional goals.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Follow us on Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Follow us on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="#">About Us</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Press</a>
+                        <a href="#">Blog</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <a href="#features">Features</a>
+                        <a href="#how-it-works">How It Works</a>
+                        <a href="#">Pricing</a>
+                        <a href="#">FAQ</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <a href="#">Documentation</a>
+                        <a href="#">Help Center</a>
+                        <a href="#">Community</a>
+                        <a href="#">Nutrition Guide</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Cookie Policy</a>
+                        <a href="#">Disclaimer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-left">
+                    <p>&copy; 2025 NutriAI. All rights reserved.</p>
+                    <p class="footer-credit">Created by Alfat Tasnim Hasan | Contact: 01736276082 | alfattasnimhasan@gmail.com</p>
+                </div>
+                <div class="footer-bottom-right">
+                    <a href="#">Privacy</a>
+                    <span class="footer-divider">|</span>
+                    <a href="#">Terms</a>
+                    <span class="footer-divider">|</span>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Theme Toggle Button -->
+    <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

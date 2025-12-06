@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot - NutriAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-body">
+    {% include 'includes/sidebar.html' %}
+    
+    <main class="main-content">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div>
+                    <h2>NutriAI Assistant</h2>
+                    <p>Your personal nutrition expert, available 24/7</p>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>👋 Hi! I'm your NutriAI assistant. I can help you with:</p>
+                        <ul>
+                            <li>🍎 Food nutritional information</li>
+                            <li>💡 Personalized recommendations</li>
+                            <li>🔄 Healthier food alternatives</li>
+                            <li>📊 Diet and health tips</li>
+                            <li>😊 Mood-based food suggestions</li>
+                        </ul>
+                        <p>What would you like to know?</p>
+                    </div>
+                </div>
+            </div>
+
+            <form class="chat-input-form" id="chatForm">
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Ask me anything about nutrition..." required>
+                    <button type="submit" class="btn-primary" aria-label="Send message">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="quick-questions">
+                    <button type="button" class="quick-q" onclick="sendQuickQuestion('What are the calories in chicken?')">
+                        Calories in chicken?
+                    </button>
+                    <button type="button" class="quick-q" onclick="sendQuickQuestion('Recommend foods for weight loss')">
+                        Foods for weight loss
+                    </button>
+                    <button type="button" class="quick-q" onclick="sendQuickQuestion('What should I eat when stressed?')">
+                        Foods for stress
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>

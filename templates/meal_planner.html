@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner - NutriAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-body">
+    {% include 'includes/sidebar.html' %}
+    
+    <main class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1>🍽️ Meal Planner</h1>
+                <p>Plan your meals for the day</p>
+            </div>
+            <div class="top-bar-actions">
+                <button class="btn-outline" onclick="showSavedPlans()">
+                    <i class="fas fa-history"></i> Saved Plans
+                </button>
+                <button class="btn-primary" onclick="showGenerateModal()">
+                    <i class="fas fa-magic"></i> Generate 7-Day Plan
+                </button>
+            </div>
+        </div>
+
+        <!-- Today's Meal Sections -->
+        <div class="meals-sections">
+            <!-- Breakfast Section -->
+            <div class="meal-section">
+                <div class="meal-section-header">
+                    <div class="meal-icon breakfast">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+                    <div>
+                        <h3>Breakfast</h3>
+                        <p class="meal-calories" id="breakfastCalories">0 cal</p>
+                    </div>
+                    <button class="btn-add" onclick="addFood('Breakfast')">
+                        <i class="fas fa-plus"></i> Add Food
+                    </button>
+                </div>
+                <div class="meal-items" id="breakfastItems">
+                    <div class="empty-meal">
+                        <i class="fas fa-utensils"></i>
+                        <p>No items added yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lunch Section -->
+            <div class="meal-section">
+                <div class="meal-section-header">
+                    <div class="meal-icon lunch">
+                        <i class="fas fa-hamburger"></i>
+                    </div>
+                    <div>
+                        <h3>Lunch</h3>
+                        <p class="meal-calories" id="lunchCalories">0 cal</p>
+                    </div>
+                    <button class="btn-add" onclick="addFood('Lunch')">
+                        <i class="fas fa-plus"></i> Add Food
+                    </button>
+                </div>
+                <div class="meal-items" id="lunchItems">
+                    <div class="empty-meal">
+                        <i class="fas fa-utensils"></i>
+                        <p>No items added yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dinner Section -->
+            <div class="meal-section">
+                <div class="meal-section-header">
+                    <div class="meal-icon dinner">
+                        <i class="fas fa-pizza-slice"></i>
+                    </div>
+                    <div>
+                        <h3>Dinner</h3>
+                        <p class="meal-calories" id="dinnerCalories">0 cal</p>
+                    </div>
+                    <button class="btn-add" onclick="addFood('Dinner')">
+                        <i class="fas fa-plus"></i> Add Food
+                    </button>
+                </div>
+                <div class="meal-items" id="dinnerItems">
+                    <div class="empty-meal">
+                        <i class="fas fa-utensils"></i>
+                        <p>No items added yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Snack Section -->
+            <div class="meal-section">
+                <div class="meal-section-header">
+                    <div class="meal-icon snack">
+                        <i class="fas fa-cookie-bite"></i>
+                    </div>
+                    <div>
+                        <h3>Snacks</h3>
+                        <p class="meal-calories" id="snackCalories">0 cal</p>
+                    </div>
+                    <button class="btn-add" onclick="addFood('Snack')">
+                        <i class="fas fa-plus"></i> Add Food
+                    </button>
+                </div>
+                <div class="meal-items" id="snackItems">
+                    <div class="empty-meal">
+                        <i class="fas fa-utensils"></i>
+                        <p>No items added yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Summary -->
+        <div class="card daily-summary">
+            <div class="card-header">
+                <h3>Today's Summary</h3>
+            </div>
+            <div class="card-body">
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <div class="stat-label">Total Calories</div>
+                        <div class="stat-value" id="totalCalories">0</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="stat-label">Protein</div>
+                        <div class="stat-value" id="totalProtein">0g</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="stat-label">Carbs</div>
+                        <div class="stat-value" id="totalCarbs">0g</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="stat-label">Fat</div>
+                        <div class="stat-value" id="totalFat">0g</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Food Modal -->
+    <div id="addFoodModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Add Food to <span id="modalMealType"></span></h3>
+                <button class="modal-close" onclick="closeModal('addFoodModal')" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Search and Filters -->
+                <div class="search-filters">
+                    <input type="text" 
+                           class="search-input" 
+                           id="foodSearchInput" 
+                           placeholder="Search foods..."
+                           onkeyup="filterFoods()">
+                    <div class="filter-chips">
+                        <button class="filter-chip" data-filter="all" onclick="applyFilter('all')">All</button>
+                        <button class="filter-chip" data-filter="high-protein" onclick="applyFilter('high-protein')">High Protein</button>
+                        <button class="filter-chip" data-filter="low-carb" onclick="applyFilter('low-carb')">Low Carb</button>
+                        <button class="filter-chip" data-filter="low-calorie" onclick="applyFilter('low-calorie')">Low Calorie</button>
+                        <button class="filter-chip" data-filter="healthy" onclick="applyFilter('healthy')">Healthy</button>
+                    </div>
+                </div>
+
+                <!-- Foods Grid -->
+                <div class="foods-grid" id="modalFoodsGrid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading foods...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate 7-Day Plan Modal -->
+    <div id="generatePlanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Generate 7-Day Meal Plan</h3>
+                <button class="modal-close" onclick="closeModal('generatePlanModal')" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="generatePlanForm">
+                    <div class="form-group">
+                        <label>Plan Name</label>
+                        <input type="text" class="form-control" name="name" value="My Meal Plan" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Diet Type</label>
+                        <select class="form-control" name="diet_type" aria-label="Select diet type">
+                            <option value="Balanced">Balanced</option>
+                            <option value="Low_Carb">Low Carb</option>
+                            <option value="Low_Sodium">Low Sodium</option>
+                            <option value="High_Protein">High Protein</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Daily Budget ($)</label>
+                        <input type="number" class="form-control" name="budget_per_day" value="20" min="5">
+                    </div>
+                    <button type="submit" class="btn-primary btn-block">
+                        <i class="fas fa-magic"></i> Generate Plan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View 7-Day Plan Modal -->
+    <div id="weeklyPlanModal" class="modal">
+        <div class="modal-content modal-xlarge">
+            <div class="modal-header">
+                <h3 id="weeklyPlanTitle">7-Day Meal Plan</h3>
+                <button class="modal-close" onclick="closeModal('weeklyPlanModal')" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="weekly-view" id="weeklyMeals"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Saved Plans Modal -->
+    <div id="savedPlansModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Saved Meal Plans</h3>
+                <button class="modal-close" onclick="closeModal('savedPlansModal')" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="savedPlansList" class="plans-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading saved plans...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/meal-planner.js') }}"></script>
+</body>
+</html>

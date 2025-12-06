@@ -1,0 +1,78 @@
+<!-- Admin Sidebar - Separate from User Sidebar -->
+<aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+        <div class="admin-brand">
+            <i class="fas fa-shield-alt"></i>
+            <div>
+                <h2>Admin Panel</h2>
+                <span>NutriAI Control Center</span>
+            </div>
+        </div>
+    </div>
+    
+    <nav class="admin-nav">
+        <div class="nav-section">
+            <div class="nav-section-title">OVERVIEW</div>
+            <a href="/admin" class="admin-nav-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">MANAGEMENT</div>
+            <a href="#" class="admin-nav-item" onclick="showTab('users'); return false;">
+                <i class="fas fa-users"></i>
+                <span>User Management</span>
+            </a>
+            <a href="#" class="admin-nav-item" onclick="showTab('foods'); return false;">
+                <i class="fas fa-utensils"></i>
+                <span>Food Database</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">MONITORING</div>
+            <a href="#" class="admin-nav-item" onclick="showTab('analytics'); return false;">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#" class="admin-nav-item" onclick="showTab('ml'); return false;">
+                <i class="fas fa-brain"></i>
+                <span>ML Monitor</span>
+            </a>
+            <a href="#" class="admin-nav-item" onclick="showTab('logs'); return false;">
+                <i class="fas fa-file-alt"></i>
+                <span>Activity Logs</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">SYSTEM</div>
+            <a href="#" class="admin-nav-item" onclick="showTab('settings'); return false;">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="admin-sidebar-footer">
+        <div class="admin-user-info">
+            <div class="admin-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="admin-details">
+                <div class="admin-name">{{ user.username }}</div>
+                <div class="admin-role">Administrator</div>
+            </div>
+        </div>
+        <div class="admin-actions">
+            <a href="/dashboard" class="admin-action-btn" title="User Dashboard">
+                <i class="fas fa-home"></i>
+            </a>
+            <a href="/logout" class="admin-action-btn" title="Logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </div>
+    </div>
+</aside>

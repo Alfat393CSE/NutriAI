@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - NutriAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-body">
+    {% include 'includes/sidebar.html' %}
+    
+    <main class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1>👤 Your Profile</h1>
+                <p>Manage your account and preferences</p>
+            </div>
+        </div>
+
+        <div class="profile-grid">
+            <!-- Account Information -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Account Information</h3>
+                </div>
+                <div class="card-body">
+                    <form id="accountForm" class="form-grid">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" id="username" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="email" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="fullName" placeholder="John Doe">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Health Metrics -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Health Metrics</h3>
+                </div>
+                <div class="card-body">
+                    <form id="metricsForm" class="form-grid">
+                        <div class="form-group">
+                            <label>Age</label>
+                            <input type="number" id="age" placeholder="25">
+                        </div>
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <select id="gender" aria-label="Select gender">
+                                <option value="">Select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Height (cm)</label>
+                            <input type="number" id="height" placeholder="170">
+                        </div>
+                        <div class="form-group">
+                            <label>Weight (kg)</label>
+                            <input type="number" id="weight" step="0.1" placeholder="70">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>BMI</label>
+                            <input type="text" id="bmi" disabled placeholder="Calculated automatically">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Dietary Preferences -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Dietary Preferences</h3>
+                </div>
+                <div class="card-body">
+                    <form id="dietForm" class="form-grid">
+                        <div class="form-group">
+                            <label>Diet Goal</label>
+                            <select id="dietGoal" aria-label="Select diet goal">
+                                <option value="">Select goal</option>
+                                <option value="weight_loss">Weight Loss</option>
+                                <option value="muscle_gain">Muscle Gain</option>
+                                <option value="maintenance">Maintenance</option>
+                                <option value="health">General Health</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Dietary Type</label>
+                            <select id="dietaryType" aria-label="Select dietary type">
+                                <option value="">Select type</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="vegan">Vegan</option>
+                                <option value="keto">Keto</option>
+                                <option value="paleo">Paleo</option>
+                                <option value="omnivore">Omnivore</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Allergies (comma-separated)</label>
+                            <input type="text" id="allergies" placeholder="peanuts, dairy, gluten">
+                        </div>
+                        <div class="form-group">
+                            <label>Activity Level</label>
+                            <select id="activityLevel" aria-label="Select activity level">
+                                <option value="">Select level</option>
+                                <option value="sedentary">Sedentary</option>
+                                <option value="light">Light</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="active">Active</option>
+                                <option value="very_active">Very Active</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Daily Targets -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Daily Nutritional Targets</h3>
+                </div>
+                <div class="card-body">
+                    <form id="targetsForm" class="form-grid">
+                        <div class="form-group">
+                            <label>Calories Goal</label>
+                            <input type="number" id="caloriesGoal" placeholder="2000">
+                        </div>
+                        <div class="form-group">
+                            <label>Protein Goal (g)</label>
+                            <input type="number" id="proteinGoal" placeholder="150">
+                        </div>
+                        <div class="form-group">
+                            <label>Carbs Goal (g)</label>
+                            <input type="number" id="carbsGoal" placeholder="200">
+                        </div>
+                        <div class="form-group">
+                            <label>Fat Goal (g)</label>
+                            <input type="number" id="fatGoal" placeholder="65">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="profile-actions">
+            <button class="btn-primary" onclick="saveProfile()">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <button class="btn-outline" onclick="loadProfile()">
+                <i class="fas fa-undo"></i> Reset
+            </button>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+</body>
+</html>

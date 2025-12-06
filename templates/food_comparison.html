@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Comparison - NutriAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="app-body">
+    {% include 'includes/sidebar.html' %}
+    
+    <main class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1><i class="fas fa-balance-scale"></i> Food Comparison</h1>
+                <p>Compare nutritional values side by side</p>
+            </div>
+        </div>
+
+        <!-- Food Selectors -->
+        <div class="comparison-selectors">
+            <div class="food-selector-card">
+                <h3><i class="fas fa-apple-alt"></i> Food 1</h3>
+                <select id="food1Select" class="form-control" onchange="selectFood(1)" aria-label="Select first food for comparison">
+                    <option value="">Select a food...</option>
+                </select>
+            </div>
+
+            <div class="vs-badge">
+                <span>VS</span>
+            </div>
+
+            <div class="food-selector-card">
+                <h3><i class="fas fa-carrot"></i> Food 2</h3>
+                <select id="food2Select" class="form-control" onchange="selectFood(2)" aria-label="Select second food for comparison">
+                    <option value="">Select a food...</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Comparison Result -->
+        <div id="comparisonResult" class="comparison-result" style="display: none;">
+            <!-- Health Analysis Banner -->
+            <div id="healthAnalysis" class="health-analysis-banner"></div>
+
+            <!-- Side-by-Side Food Cards -->
+            <div class="comparison-cards">
+                <!-- Food Card 1 -->
+                <div class="comparison-food-card" id="foodCard1">
+                    <div class="food-card-header">
+                        <h2 id="food1Name">Food 1</h2>
+                        <div class="health-score" id="food1Health"></div>
+                    </div>
+                    <div class="food-card-body">
+                        <div class="macro-circle">
+                            <canvas id="macroChart1" width="150" height="150"></canvas>
+                        </div>
+                        <div class="nutrition-facts">
+                            <div class="fact-row">
+                                <span class="fact-label">Calories</span>
+                                <span class="fact-value" id="food1Calories">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Protein</span>
+                                <span class="fact-value" id="food1Protein">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Carbs</span>
+                                <span class="fact-value" id="food1Carbs">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Fat</span>
+                                <span class="fact-value" id="food1Fat">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Fiber</span>
+                                <span class="fact-value" id="food1Fiber">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Sugar</span>
+                                <span class="fact-value" id="food1Sugar">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Sodium</span>
+                                <span class="fact-value" id="food1Sodium">-</span>
+                            </div>
+                        </div>
+                        <div class="food-tags" id="food1Tags"></div>
+                    </div>
+                </div>
+
+                <!-- Difference Indicators -->
+                <div class="difference-column" id="differenceColumn">
+                    <div class="diff-header">Difference</div>
+                    <div class="macro-diff-chart">
+                        <canvas id="differenceChart" width="150" height="200"></canvas>
+                    </div>
+                    <div class="nutrition-diffs">
+                        <div class="diff-row" data-metric="calories"></div>
+                        <div class="diff-row" data-metric="protein"></div>
+                        <div class="diff-row" data-metric="carbs"></div>
+                        <div class="diff-row" data-metric="fat"></div>
+                        <div class="diff-row" data-metric="fiber"></div>
+                        <div class="diff-row" data-metric="sugar"></div>
+                        <div class="diff-row" data-metric="sodium"></div>
+                    </div>
+                </div>
+
+                <!-- Food Card 2 -->
+                <div class="comparison-food-card" id="foodCard2">
+                    <div class="food-card-header">
+                        <h2 id="food2Name">Food 2</h2>
+                        <div class="health-score" id="food2Health"></div>
+                    </div>
+                    <div class="food-card-body">
+                        <div class="macro-circle">
+                            <canvas id="macroChart2" width="150" height="150"></canvas>
+                        </div>
+                        <div class="nutrition-facts">
+                            <div class="fact-row">
+                                <span class="fact-label">Calories</span>
+                                <span class="fact-value" id="food2Calories">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Protein</span>
+                                <span class="fact-value" id="food2Protein">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Carbs</span>
+                                <span class="fact-value" id="food2Carbs">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Fat</span>
+                                <span class="fact-value" id="food2Fat">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Fiber</span>
+                                <span class="fact-value" id="food2Fiber">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Sugar</span>
+                                <span class="fact-value" id="food2Sugar">-</span>
+                            </div>
+                            <div class="fact-row">
+                                <span class="fact-label">Sodium</span>
+                                <span class="fact-value" id="food2Sodium">-</span>
+                            </div>
+                        </div>
+                        <div class="food-tags" id="food2Tags"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Comparison Chart -->
+            <div class="detailed-comparison-chart">
+                <h3><i class="fas fa-chart-bar"></i> Nutritional Comparison</h3>
+                <canvas id="comparisonBarChart" height="80"></canvas>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state">
+            <i class="fas fa-balance-scale fa-3x"></i>
+            <h3>Select Two Foods to Compare</h3>
+            <p>Choose foods from the dropdowns above to see a detailed nutritional comparison</p>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/food-comparison.js') }}"></script>
+</body>
+</html>

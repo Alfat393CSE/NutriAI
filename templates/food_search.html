@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Search - NutriAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-body">
+    {% include 'includes/sidebar.html' %}
+    
+    <main class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1>Food Database</h1>
+                <p>Browse and search 25+ nutritious foods</p>
+            </div>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="search-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search foods by name..." onkeyup="searchFoods()">
+            </div>
+            
+            <div class="filters">
+                <select id="categoryFilter" onchange="filterFoods()" class="form-control" aria-label="Filter by category">
+                    <option value="">All Categories</option>
+                    <option value="Proteins">Proteins</option>
+                    <option value="Vegetables">Vegetables</option>
+                    <option value="Fruits">Fruits</option>
+                    <option value="Grains">Grains</option>
+                    <option value="Dairy">Dairy</option>
+                    <option value="Nuts">Nuts</option>
+                </select>
+                
+                <select id="healthFilter" onchange="filterFoods()" class="form-control" aria-label="Filter by health rating">
+                    <option value="">All Health Ratings</option>
+                    <option value="Excellent">Excellent</option>
+                    <option value="Good">Good</option>
+                    <option value="Fair">Fair</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Foods Grid -->
+        <div id="foodsGrid" class="foods-grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading foods...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Food Detail Modal -->
+    <div id="foodDetailModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="foodName"></h3>
+                <button class="modal-close" onclick="closeModal('foodDetailModal')" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="foodDetailBody">
+                <!-- Content filled by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/food-search.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Diet Recommendation Result</title>
+    <style>
+        /* Card style for result */
+.result-card {
+    background: #ffffffcc; /* Semi-transparent white */
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+/* Headings */
+.result-card h1 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.result-card .subtitle {
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+/* Result box */
+.result-box {
+    margin: 30px 0;
+    padding: 25px 20px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.result-box:hover {
+    transform: scale(1.05);
+}
+
+/* Back button */
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: #6a11cb;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.back-btn:hover {
+    background: #2575fc;
+    transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .result-card {
+        padding: 30px 20px;
+    }
+
+    .result-box {
+        font-size: 22px;
+        padding: 20px 15px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Your Recommended Diet:</h1>
+        <div class="result-box">
+            <h2>{{ prediction }}</h2>
+        </div>
+        <a href="/">🔙 Go Back</a>
+    </div>
+</body>
+</html>

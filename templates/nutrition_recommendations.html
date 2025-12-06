@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Recommendations - NutriAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-body">
+    {% include 'includes/sidebar.html' %}
+    
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h1><i class="fas fa-lightbulb"></i> Personalized Nutrition Recommendations</h1>
+                <p>Get AI-powered nutrition guidance tailored to your goals</p>
+            </div>
+            <div class="top-bar-right">
+                <button class="btn-primary" onclick="refreshRecommendations()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state">
+            <div class="spinner"></div>
+            <p>Analyzing your profile and generating recommendations...</p>
+        </div>
+
+        <!-- Main Content -->
+        <div id="recommendationsContent" style="display: none;">
+            
+            <!-- User Profile Summary -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-user"></i> Your Profile Summary</h3>
+                    <a href="/profile" class="btn-secondary">Update Profile</a>
+                </div>
+                <div class="card-body">
+                    <div id="profileSummary" class="profile-summary-grid"></div>
+                </div>
+            </div>
+
+            <!-- Calorie & Macro Targets -->
+            <div class="recommendations-grid">
+                <div class="card highlight-card calorie-card">
+                    <div class="card-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="card-content">
+                        <h4>Daily Calorie Target</h4>
+                        <div class="big-number" id="calorieTarget">--</div>
+                        <p class="card-subtitle">Calories per day</p>
+                        <div class="breakdown">
+                            <small><strong>BMR:</strong> <span id="bmr">--</span> cal</small>
+                            <small><strong>TDEE:</strong> <span id="tdee">--</span> cal</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card highlight-card macro-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="card-content">
+                        <h4>Macro Distribution</h4>
+                        <div class="macro-breakdown" id="macroBreakdown">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card highlight-card bmi-card">
+                    <div class="card-icon">
+                        <i class="fas fa-weight"></i>
+                    </div>
+                    <div class="card-content">
+                        <h4>Body Mass Index</h4>
+                        <div class="big-number" id="bmiValue">--</div>
+                        <p class="card-subtitle" id="bmiCategory">--</p>
+                        <p class="bmi-advice" id="bmiAdvice">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Recommended Foods -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-star"></i> Top 10 Recommended Foods for You</h3>
+                    <span class="badge-info">Based on your goal: <span id="userGoal">--</span></span>
+                </div>
+                <div class="card-body">
+                    <div id="topFoods" class="recommended-foods-grid">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Foods to Avoid -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Foods to Avoid</h3>
+                </div>
+                <div class="card-body">
+                    <div id="avoidFoods" class="avoid-foods-list">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meal Suggestions -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-utensils"></i> Meal Suggestions</h3>
+                </div>
+                <div class="card-body">
+                    <div class="meal-suggestions-grid">
+                        <div class="meal-suggestion-section">
+                            <h4><i class="fas fa-coffee"></i> Breakfast Ideas</h4>
+                            <div id="breakfastSuggestions" class="meal-items"></div>
+                        </div>
+                        <div class="meal-suggestion-section">
+                            <h4><i class="fas fa-hamburger"></i> Lunch Ideas</h4>
+                            <div id="lunchSuggestions" class="meal-items"></div>
+                        </div>
+                        <div class="meal-suggestion-section">
+                            <h4><i class="fas fa-pizza-slice"></i> Dinner Ideas</h4>
+                            <div id="dinnerSuggestions" class="meal-items"></div>
+                        </div>
+                        <div class="meal-suggestion-section">
+                            <h4><i class="fas fa-cookie-bite"></i> Snack Ideas</h4>
+                            <div id="snackSuggestions" class="meal-items"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meal Calorie Distribution -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-bar"></i> Daily Meal Distribution</h3>
+                </div>
+                <div class="card-body">
+                    <div id="mealDistribution" class="meal-distribution">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Calculator -->
+            <div class="card calculator-card">
+                <div class="card-header calculator-header">
+                    <div class="header-content">
+                        <div class="header-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="header-text">
+                            <h3>Quick Nutrition Calculator</h3>
+                            <p class="subtitle">Experiment with different parameters without updating your profile</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body calculator-body">
+                    <form id="quickCalculator" class="calculator-form">
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-user-circle"></i> Personal Information
+                            </h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>
+                                        <i class="fas fa-calendar-alt"></i> Age
+                                        <span class="required">*</span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <input type="number" name="age" min="10" max="100" placeholder="e.g., 30" required>
+                                        <span class="input-unit">years</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <i class="fas fa-venus-mars"></i> Gender
+                                        <span class="required">*</span>
+                                    </label>
+                                    <select name="gender" required aria-label="Select gender">
+                                        <option value="" disabled selected>Choose gender</option>
+                                        <option value="male">♂ Male</option>
+                                        <option value="female">♀ Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <i class="fas fa-weight"></i> Weight
+                                        <span class="required">*</span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <input type="number" name="weight_kg" min="30" max="300" step="0.1" placeholder="e.g., 70" required>
+                                        <span class="input-unit">kg</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <i class="fas fa-ruler-vertical"></i> Height
+                                        <span class="required">*</span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <input type="number" name="height_cm" min="100" max="250" placeholder="e.g., 170" required>
+                                        <span class="input-unit">cm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-bullseye"></i> Goals & Activity
+                            </h4>
+                            <div class="form-grid">
+                                <div class="form-group form-group-full">
+                                    <label>
+                                        <i class="fas fa-running"></i> Activity Level
+                                        <span class="required">*</span>
+                                    </label>
+                                    <select name="activity_level" required aria-label="Select activity level" class="activity-select">
+                                        <option value="" disabled>Choose your activity level</option>
+                                        <option value="sedentary">🛋️ Sedentary - Little or no exercise</option>
+                                        <option value="light">🚶 Light - Exercise 1-3 days/week</option>
+                                        <option value="moderate" selected>🏃 Moderate - Exercise 3-5 days/week</option>
+                                        <option value="active">💪 Active - Exercise 6-7 days/week</option>
+                                        <option value="very_active">🏋️ Very Active - Intense daily training</option>
+                                    </select>
+                                </div>
+                                <div class="form-group form-group-full">
+                                    <label>
+                                        <i class="fas fa-target"></i> Primary Goal
+                                        <span class="required">*</span>
+                                    </label>
+                                    <select name="goal" required aria-label="Select goal" class="goal-select">
+                                        <option value="" disabled>Choose your goal</option>
+                                        <option value="weight_loss">⬇️ Weight Loss - Sustainable calorie deficit</option>
+                                        <option value="fat_loss">🔥 Fat Loss - Preserve muscle, lose fat</option>
+                                        <option value="muscle_gain">💪 Muscle Gain - Build strength & size</option>
+                                        <option value="maintenance" selected>⚖️ Maintenance - Stay at current weight</option>
+                                        <option value="diabetes_friendly">🩺 Diabetes Friendly - Blood sugar control</option>
+                                        <option value="heart_healthy">❤️ Heart Healthy - Cardiovascular health</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-calculate">
+                                <span class="btn-icon">
+                                    <i class="fas fa-calculator"></i>
+                                </span>
+                                <span class="btn-text">Calculate My Nutrition Plan</span>
+                                <span class="btn-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </span>
+                            </button>
+                            <p class="form-note">
+                                <i class="fas fa-info-circle"></i> 
+                                This calculation is for preview only and won't update your profile
+                            </p>
+                        </div>
+                    </form>
+                    
+                    <div id="calculatorResult" class="calculator-result"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Theme Toggle Button -->
+    <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nutrition-recommendations.js') }}"></script>
+</body>
+</html>

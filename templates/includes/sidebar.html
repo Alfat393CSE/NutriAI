@@ -1,0 +1,62 @@
+<!-- Reusable Sidebar Component -->
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <i class="fas fa-leaf"></i>
+        <span>NutriAI</span>
+    </div>
+    
+    <nav class="sidebar-nav">
+        <a href="/dashboard" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="/nutrition-recommendations" class="nav-item">
+            <i class="fas fa-lightbulb"></i>
+            <span>Recommendations</span>
+        </a>
+        <a href="/food-search" class="nav-item">
+            <i class="fas fa-search"></i>
+            <span>Food Search</span>
+        </a>
+        <a href="/food-comparison" class="nav-item">
+            <i class="fas fa-balance-scale"></i>
+            <span>Compare Foods</span>
+        </a>
+        <a href="/meal-planner" class="nav-item">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Meal Planner</span>
+        </a>
+        <a href="/history" class="nav-item">
+            <i class="fas fa-history"></i>
+            <span>History</span>
+        </a>
+        <a href="/chatbot" class="nav-item">
+            <i class="fas fa-comments"></i>
+            <span>AI Assistant</span>
+        </a>
+        <a href="/profile" class="nav-item">
+            <i class="fas fa-user-circle"></i>
+            <span>Profile</span>
+        </a>
+        {% if user and user.is_admin %}
+        <a href="/admin" class="nav-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>Admin Panel</span>
+        </a>
+        {% endif %}
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-menu">
+            <div class="user-avatar">{{ user.username[0].upper() if user else 'U' }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ user.username if user else 'User' }}</div>
+                <div class="user-email">{{ user.email if user else '' }}</div>
+            </div>
+        </div>
+        <a href="/logout" class="btn-logout">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </a>
+    </div>
+</aside>
