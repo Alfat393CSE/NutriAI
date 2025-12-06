@@ -11,7 +11,7 @@ dist/
 build/
 .env
 .venv
-instance/*.db
+instance/
 *.sqlite
 *.db
 .DS_Store
