@@ -28,6 +28,11 @@ cd NutriAI
 # Create virtual environment with Python 3.11
 mkvirtualenv --python=/usr/bin/python3.11 nutriai-env
 
+# If you get errors, the virtualenv might be corrupted. Recreate it:
+# deactivate
+# rmvirtualenv nutriai-env
+# mkvirtualenv --python=/usr/bin/python3.11 nutriai-env
+
 # Activate it (if not already activated)
 workon nutriai-env
 ```
@@ -35,16 +40,14 @@ workon nutriai-env
 ### 5. Install Dependencies
 
 ```bash
-# Fix pip if there's an error (common on PythonAnywhere)
-python -m pip install --upgrade pip
+# Install requirements (use python -m pip if regular pip fails)
+python -m pip install -r requirements.txt
 
-# If above fails, reinstall pip
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python get-pip.py
-rm get-pip.py
-
-# Install requirements
-pip install -r requirements.txt
+# If above fails with _posixsubprocess error, recreate virtual environment:
+# deactivate
+# rmvirtualenv nutriai-env  
+# mkvirtualenv --python=/usr/bin/python3.11 nutriai-env
+# pip install -r requirements.txt
 ```
 
 ### 6. Initialize Database
