@@ -2,10 +2,12 @@ services:
   - type: web
     name: nutriai
     env: python
-    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
-    startCommand: gunicorn app_new:app
+    region: oregon
+    plan: free
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
+    startCommand: gunicorn app_new:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.6
+        value: 3.11.9
       - key: SECRET_KEY
         generateValue: true
