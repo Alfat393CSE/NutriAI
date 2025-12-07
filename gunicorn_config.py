@@ -1,9 +1,11 @@
 """Gunicorn configuration for NutriAI application"""
 
 import multiprocessing
+import os
 
-# Server socket
-bind = "0.0.0.0:10000"
+# Server socket - Render provides PORT environment variable
+port = os.environ.get('PORT', '10000')
+bind = f"0.0.0.0:{port}"
 backlog = 2048
 
 # Worker processes

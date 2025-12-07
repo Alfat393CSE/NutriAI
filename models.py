@@ -25,6 +25,9 @@ class User(UserMixin, db.Model):
     
     # Health Metrics
     daily_caloric_intake = db.Column(db.Integer)
+    protein_goal = db.Column(db.Integer)
+    carbs_goal = db.Column(db.Integer)
+    fat_goal = db.Column(db.Integer)
     cholesterol = db.Column(db.Float)
     blood_pressure = db.Column(db.String(20))
     glucose = db.Column(db.Float)
@@ -71,6 +74,9 @@ class User(UserMixin, db.Model):
             'height_cm': self.height_cm,
             'bmi': self.bmi,
             'daily_caloric_intake': self.daily_caloric_intake,
+            'protein_goal': self.protein_goal,
+            'carbs_goal': self.carbs_goal,
+            'fat_goal': self.fat_goal,
             'cholesterol': self.cholesterol,
             'blood_pressure': self.blood_pressure,
             'glucose': self.glucose,

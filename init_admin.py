@@ -7,6 +7,11 @@ from models import User, Food
 
 def init_admin():
     with app.app_context():
+        # Create all database tables if they don't exist
+        print("🗄️  Creating database tables...")
+        db.create_all()
+        print("✓ Database tables created")
+        
         # Check if admin user exists
         admin = User.query.filter_by(username='admin').first()
         

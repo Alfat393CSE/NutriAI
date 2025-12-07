@@ -116,6 +116,11 @@ FOODS_DATABASE = [
 def populate_database():
     """Populate database with comprehensive food list"""
     with app.app_context():
+        # Create all database tables if they don't exist
+        print("🗄️  Creating database tables...")
+        db.create_all()
+        print("✓ Database tables created")
+        
         print("🍎 Starting food database population...")
         
         # Check existing foods

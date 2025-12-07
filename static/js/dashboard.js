@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadDashboardStats();
     await loadTodayMeals();
     initializeCharts();
+    setupFoodLogForm();
 });
 
 // Load dashboard statistics
@@ -21,12 +22,23 @@ async function loadDashboardStats() {
         document.getElementById('todayCalories').textContent = data.today.calories;
         document.getElementById('targetCalories').textContent = data.today.target_calories;
         document.getElementById('todayProtein').textContent = data.today.protein + 'g';
+        document.getElementById('targetProtein').textContent = data.today.target_protein;
         document.getElementById('todayCarbs').textContent = data.today.carbs + 'g';
+        document.getElementById('targetCarbs').textContent = data.today.target_carbs;
         document.getElementById('todayFat').textContent = data.today.fat + 'g';
+        document.getElementById('targetFat').textContent = data.today.target_fat;
         
         // Update progress bar
         const progress = (data.today.calories / data.today.target_calories) * 100;
         document.getElementById('caloriesProgress').style.width = Math.min(progress, 100) + '%';
+        
+        // Update macro progress indicators
+        updateMacroProgress('protein', data.today.protein, data.today.target_protein);
+        updateMacroProgress('carbs', data.today.carbs, data.today.target_carbs);
+        updateMacroProgress('fat', data.today.fat, data.today.target_fat);
+        
+        // Update charts if they exist
+        updateCharts();
         
         // Update active meal plan
         if (data.active_meal_plan) {
@@ -35,6 +47,28 @@ async function loadDashboardStats() {
         
     } catch (error) {
         console.error('Failed to load dashboard stats:', error);
+    }
+}
+
+// Update macro progress indicator
+function updateMacroProgress(macroType, current, target) {
+    const changeElement = document.getElementById(`${macroType}Change`);
+    if (!changeElement) return;
+    
+    const percentage = target > 0 ? ((current / target) * 100).toFixed(0) : 0;
+    
+    if (current === 0) {
+        changeElement.className = 'stat-change';
+        changeElement.innerHTML = '<i class="fas fa-utensils"></i> Not started';
+    } else if (percentage >= 90 && percentage <= 110) {
+        changeElement.className = 'stat-change';
+        changeElement.innerHTML = '<i class="fas fa-check"></i> On target';
+    } else if (percentage > 110) {
+        changeElement.className = 'stat-change negative';
+        changeElement.innerHTML = `<i class="fas fa-arrow-up"></i> ${percentage}% of target`;
+    } else {
+        changeElement.className = 'stat-change positive';
+        changeElement.innerHTML = `<i class="fas fa-arrow-up"></i> ${percentage}% of target`;
     }
 }
 
@@ -178,19 +212,57 @@ function initializeCharts() {
     }
 }
 
+// Update charts with new data
+function updateCharts() {
+    if (!dashboardData) return;
+    
+    // Update macros chart
+    if (macrosChart) {
+        macrosChart.data.datasets[0].data = [
+            dashboardData.today.protein,
+            dashboardData.today.carbs,
+            dashboardData.today.fat
+        ];
+        macrosChart.update();
+    }
+}
+
 // Log food modal
 function logFood() {
+    console.log('Opening food log modal...');
     const modal = document.getElementById('logFoodModal');
+    if (!modal) {
+        console.error('Modal not found!');
+        return;
+    }
     modal.classList.add('active');
+    
+    // Reset form and selection
+    selectedFoodId = null;
+    const form = document.getElementById('logFoodForm');
+    if (form) form.reset();
+    document.getElementById('foodSearchResults').innerHTML = '';
     
     // Setup food search
     const searchInput = document.getElementById('foodSearch');
     const resultsContainer = document.getElementById('foodSearchResults');
     
+    if (!searchInput || !resultsContainer) {
+        console.error('Search elements not found!');
+        return;
+    }
+    
     let searchTimeout;
-    searchInput.addEventListener('input', (e) => {
+    
+    // Remove any existing listeners
+    const newSearchInput = searchInput.cloneNode(true);
+    searchInput.parentNode.replaceChild(newSearchInput, searchInput);
+    
+    newSearchInput.addEventListener('input', (e) => {
         clearTimeout(searchTimeout);
         const query = e.target.value;
+        
+        console.log('Search query:', query);
         
         if (query.length < 2) {
             resultsContainer.innerHTML = '';
@@ -199,24 +271,28 @@ function logFood() {
         
         searchTimeout = setTimeout(async () => {
             try {
-                const data = await window.nutriAI.apiRequest(`/api/foods?search=${query}`);
+                console.log('Fetching foods for:', query);
+                const data = await window.nutriAI.apiRequest(`/api/foods?search=${encodeURIComponent(query)}`);
                 const foods = data.foods || data || [];
+                console.log('Found foods:', foods.length);
                 displayFoodResults(foods, resultsContainer);
             } catch (error) {
                 console.error('Search failed:', error);
+                resultsContainer.innerHTML = '<p class="text-center text-danger">Search failed</p>';
             }
         }, 300);
     });
 }
 
 function displayFoodResults(foods, container) {
+    console.log('Displaying', foods.length, 'food results');
     if (foods.length === 0) {
         container.innerHTML = '<p class="text-center text-secondary">No foods found</p>';
         return;
     }
     
     container.innerHTML = foods.map(food => `
-        <div class="search-result-item" onclick="selectFood(${food.id}, '${food.name}')">
+        <div class="search-result-item" onclick="selectFood(${food.id}, '${food.name.replace(/'/g, "\\'")}')">
             <span>${food.name}</span>
             <span class="text-secondary">${food.calories} cal</span>
         </div>
@@ -225,45 +301,65 @@ function displayFoodResults(foods, container) {
 
 let selectedFoodId = null;
 function selectFood(id, name) {
+    console.log('Selected food:', id, name);
     selectedFoodId = id;
     document.getElementById('foodSearch').value = name;
     document.getElementById('foodSearchResults').innerHTML = '';
 }
 
-// Submit food log
-document.getElementById('logFoodForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    if (!selectedFoodId) {
-        window.nutriAI.showToast('Please select a food', 'error');
+// Setup food log form submission
+function setupFoodLogForm() {
+    const form = document.getElementById('logFoodForm');
+    if (!form) {
+        console.error('Food log form not found');
         return;
     }
     
-    const quantity = document.getElementById('foodQuantity').value;
-    const mealType = document.getElementById('mealType').value;
-    const today = new Date().toISOString().split('T')[0];
-    
-    try {
-        await window.nutriAI.apiRequest('/api/food-logs', 'POST', {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (!selectedFoodId) {
+            window.nutriAI.showToast('Please select a food', 'error');
+            return;
+        }
+        
+        const quantity = document.getElementById('foodQuantity').value;
+        const mealType = document.getElementById('mealType').value;
+        const today = new Date().toISOString().split('T')[0];
+        
+        console.log('Submitting food log:', {
             food_id: selectedFoodId,
             quantity_g: parseFloat(quantity),
             meal_type: mealType,
             date: today
         });
         
-        window.nutriAI.showToast('Food logged successfully!', 'success');
-        closeModal('logFoodModal');
-        await loadDashboardStats();
-        await loadTodayMeals();
-        
-        // Reset form
-        selectedFoodId = null;
-        document.getElementById('logFoodForm').reset();
-        
-    } catch (error) {
-        // Error handled by apiRequest
-    }
-});
+        try {
+            const result = await window.nutriAI.apiRequest('/api/food-logs', 'POST', {
+                food_id: selectedFoodId,
+                quantity_g: parseFloat(quantity),
+                meal_type: mealType,
+                date: today
+            });
+            
+            console.log('Food logged successfully:', result);
+            window.nutriAI.showToast('Food logged successfully!', 'success');
+            closeModal('logFoodModal');
+            
+            // Reload dashboard data
+            await loadDashboardStats();
+            await loadTodayMeals();
+            
+            // Reset form
+            selectedFoodId = null;
+            form.reset();
+            
+        } catch (error) {
+            console.error('Failed to log food:', error);
+            window.nutriAI.showToast('Failed to log food', 'error');
+        }
+    });
+}
 
 // Delete meal
 async function deleteMeal(id) {

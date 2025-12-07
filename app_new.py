@@ -252,6 +252,7 @@ def profile():
         
         # Update fields
         fields = ['age', 'gender', 'weight_kg', 'height_cm', 'daily_caloric_intake',
+                  'protein_goal', 'carbs_goal', 'fat_goal',
                   'cholesterol', 'blood_pressure', 'glucose', 'physical_activity_level',
                   'weekly_exercise_hours', 'dietary_restrictions', 'allergies',
                   'preferred_cuisine', 'diet_goal', 'disease_type', 'severity']
@@ -318,6 +319,9 @@ def dashboard_stats():
             'carbs': round(today_carbs, 1),
             'fat': round(today_fat, 1),
             'target_calories': current_user.daily_caloric_intake or 2000,
+            'target_protein': current_user.protein_goal or 150,
+            'target_carbs': current_user.carbs_goal or 200,
+            'target_fat': current_user.fat_goal or 65,
             'meals_logged': len(today_logs)
         },
         'weekly': {

@@ -1,4 +1,6 @@
+# Python
 venv/
+env/
 __pycache__/
 *.pyc
 *.pyo
@@ -9,12 +11,37 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+
+# Environment variables
 .env
 .venv
+.env.local
+
+# Database
 instance/
 *.sqlite
+*.sqlite3
 *.db
+
+# IDE
 .DS_Store
 .idea/
 .vscode/
+*.swp
+*.swo
+
+# Logs
 *.log
+logs/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Flask
+flask_session/
+
+# Temporary files
+*.tmp
+*.bak
+*~
